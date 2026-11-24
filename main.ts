@@ -12,6 +12,12 @@ const codePoints = [...line].length;
 if (codePoints < 1 || codePoints > 200) {
   throw new Error(`line must be 1–200 code points, got ${codePoints}`);
 }
+// A line of only whitespace would pass the length guard but is not a
+// roast at all (and fails the bounty's "not only white space" gate), so
+// reject it here instead of writing a blank entry.
+if (line.trim().length === 0) {
+  throw new Error("line must not be only white space");
+}
 
 mkdirSync("/output", { recursive: true });
 writeFileSync("/output/entry.txt", line, "utf8");
